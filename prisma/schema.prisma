@@ -12,3 +12,27 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+enum Gender {
+  M
+  F
+}
+
+model Member {
+  id          Int @id    @default(autoincrement()) 
+  name        String
+  gender      Gender?
+  birth_date  DateTime
+  banned      Boolean    @default(false)
+  created_at  DateTime
+  updated_at  DateTime
+  payments    Payments[]
+}
+
+model Payments {
+  id          Int @id @default(autoincrement())
+  member_id   Int
+  amount      Int 
+  paid_at     DateTime
+  member      Member @relation(fields: [member_id], references: [id])
+}
